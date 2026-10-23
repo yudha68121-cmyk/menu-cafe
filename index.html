@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kopi Senja | Menu Cafe</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f8f5ef;
+      --dark: #2c211b;
+      --brown: #70452e;
+      --gold: #d7a45b;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      color: var(--gold);
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .hero {
+      min-height: 330px;
+      padding: 65px 7%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        linear-gradient(90deg, rgba(32,20,14,.88), rgba(32,20,14,.3)),
+        url("https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1600&q=85")
+        center/cover;
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: clamp(35px, 6vw, 58px);
+      max-width: 600px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+    .hero button {
+      margin-top: 24px;
+      padding: 13px 23px;
+      border: none;
+      border-radius: 7px;
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: bold;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 45px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .section-title h2 {
+      font-size: 32px;
+      margin-bottom: 9px;
+    }
+
+    .section-title p {
+      color: #77695e;
+    }
+
+    .tools {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    #search {
+      flex: 1;
+      min-width: 200px;
+      padding: 13px;
+      border: 1px solid #ddd0c1;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .filter {
+      padding: 10px 16px;
+      border: 1px solid #d9c8b5;
+      border-radius: 30px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .filter.active,
+    .filter:hover {
+      background: var(--brown);
+      color: white;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: 13px;
+      overflow: hidden;
+      box-shadow: 0 5px 18px #38241710;
+      transition: transform .2s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .menu-card img {
+      width: 100%;
+      height: 195px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .menu-info {
+      padding: 17px;
+    }
+
+    .category {
+      font-size: 12px;
+      color: var(--brown);
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .menu-info h3 {
+      margin: 9px 0;
+      font-size: 19px;
+    }
+
+    .description {
+      color: #796f67;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 42px;
+    }
+
+    .menu-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 17px;
+    }
+
+    .price {
+      color: var(--brown);
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .add-btn {
+      background: var(--brown);
+      color: white;
+      border: none;
+      border-radius: 7px;
+      padding: 10px 13px;
+      cursor: pointer;
+    }
+
+    .add-btn:hover {
+      background: #4c2e20;
+    }
+
+    .cart {
+      margin-top: 45px;
+      padding: 25px;
+      border-radius: 13px;
+      background: white;
+      box-shadow: 0 5px 18px #38241710;
+    }
+
+    .cart h2 {
+      margin-bottom: 18px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid #eee5dc;
+    }
+
+    .cart-item small {
+      color: #77695e;
+      display: block;
+      margin-top: 5px;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity button {
+      width: 29px;
+      height: 29px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #efe5d9;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 22px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .checkout {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      background: #218c50;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .checkout:hover {
+      background: #176b3c;
+    }
+
+    .empty {
+      color: #77695e;
+      padding: 12px 0;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 30px 20px;
+      text-align: center;
+      background: var(--dark);
+      color: white;
+      line-height: 1.8;
+    }
+
+    footer span {
+      color: var(--gold);
+    }
+
+    @media (max-width: 850px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 550px) {
+      header {
+        padding: 20px;
+      }
+
+      header nav {
+        width: 100%;
+      }
+
+      header a {
+        margin-left: 0;
+        margin-right: 15px;
+      }
+
+      .hero {
+        padding: 45px 22px;
+      }
+
+      main {
+        padding: 35px 15px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-card img {
+        height: 220px;
+      }
+
+      .cart {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">☕ KOPI SENJA</div>
+    <nav>
+      <a href="#beranda">Beranda</a>
+      <a href="#menu">Menu</a>
+      <a href="#pesanan">Pesanan 🛒</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="beranda">
+    <h1>Nikmati Kopi,<br>Rayakan Hari.</h1>
+    <p>
+      Secangkir kopi, makanan lezat, dan suasana nyaman
+      untuk menemani setiap cerita.
+    </p>
+    <button onclick="document.querySelector('#menu').scrollIntoView({behavior:'smooth'})">
+      Lihat Menu Kami →
+    </button>
+  </section>
+
+  <main>
+    <section id="menu">
+      <div class="section-title">
+        <h2>Menu Favorit Kami</h2>
+        <p>Pilihan nikmat dengan harga bersahabat.</p>
+      </div>
+
+      <div class="tools">
+        <input
+          id="search"
+          type="search"
+          placeholder="Cari kopi, makanan, atau camilan..."
+          aria-label="Cari menu"
+        >
+      </div>
+
+      <div class="filters">
+        <button class="filter active" data-category="Semua">Semua</button>
+        <button class="filter" data-category="Kopi">Kopi</button>
+        <button class="filter" data-category="Non-Kopi">Non-Kopi</button>
+        <button class="filter" data-category="Makanan">Makanan</button>
+        <button class="filter" data-category="Camilan">Camilan</button>
+      </div>
+
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <section class="cart" id="pesanan">
+      <h2>🛒 Keranjang Pesanan</h2>
+      <div id="cartItems">
+        <p class="empty">Belum ada menu yang dipilih.</p>
+      </div>
+
+      <div class="total">
+        <span>Total</span>
+        <span id="totalPrice">Rp0</span>
+      </div>
+
+      <button class="checkout" onclick="checkout()">
+        Pesan via WhatsApp
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    <h3><span>☕ KOPI SENJA</span></h3>
+    <p>Tempat nyaman untuk kopi dan cerita.</p>
+    <p>Buka setiap hari · 09.00–22.00</p>
+    <p>© 2026 Kopi Senja</p>
+  </footer>
+
+  <script>
+    // Ganti nomor ini dengan nomor WhatsApp cafe.
+    // Gunakan kode negara 62 tanpa tanda +.
+    const nomorWhatsApp = "6281234567890";
+
+    const menu = [
+      {
+        id: 1,
+        name: "Espresso",
+        category: "Kopi",
+        price: 12000,
+        description: "Kopi hitam pekat dengan rasa kuat.",
+        image: "photo-1510591509098-f4fdc6d0ff04"
+      },
+      {
+        id: 2,
+        name: "Americano",
+        category: "Kopi",
+        price: 15000,
+        description: "Espresso dengan air panas yang menyegarkan.",
+        image: "photo-1517701550927-30cf4ba1dba5"
+      },
+      {
+        id: 3,
+        name: "Cafe Latte",
+        category: "Kopi",
+        price: 18000,
+        description: "Perpaduan espresso dan susu yang lembut.",
+        image: "photo-1461023058943-07fcbe16d735"
+      },
+      {
+        id: 4,
+        name: "Kopi Susu Gula Aren",
+        category: "Kopi",
+        price: 18000,
+        description: "Kopi susu creamy dengan gula aren.",
+        image: "photo-1461023058943-07fcbe16d735"
+      },
+      {
+        id: 5,
+        name: "Matcha Latte",
+        category: "Non-Kopi",
+        price: 20000,
+        description: "Matcha dengan susu yang creamy.",
+        image: "photo-1515823064-d6e0c04616a7"
+      },
+      {
+        id: 6,
+        name: "Cokelat Dingin",
+        category: "Non-Kopi",
+        price: 16000,
+        description: "Minuman cokelat manis dan menyegarkan.",
+        image: "photo-1542990253-0b8be4c3b7f2"
+      },
+      {
+        id: 7,
+        name: "Es Teh Manis",
+        category: "Non-Kopi",
+        price: 6000,
+        description: "Teh manis dingin untuk menemani santai.",
+        image: "photo-1556679343-c7306c1976bc"
+      },
+      {
+        id: 8,
+        name: "Nasi Goreng",
+        category: "Makanan",
+        price: 18000,
+        description: "Nasi goreng gurih dengan telur.",
+        image: "photo-1512058564366-18510be2db19"
+      },
+      {
+        id: 9,
+        name: "Mie Goreng",
+        category: "Makanan",
+        price: 15000,
+        description: "Mie goreng hangat dengan bumbu pilihan.",
+        image: "photo-1569718212165-3a8278d5f624"
+      },
+      {
+        id: 10,
+        name: "Roti Bakar",
+        category: "Camilan",
+        price: 12000,
+        description: "Roti panggang dengan pilihan topping.",
+        image: "photo-1520072959219-c595dc870360"
+      },
+      {
+        id: 11,
+        name: "Kentang Goreng",
+        category: "Camilan",
+        price: 13000,
+        description: "Kentang goreng renyah dengan saus.",
+        image: "photo-1573080496219-bb080dd4f877"
+      },
+      {
+        id: 12,
+        name: "Pisang Goreng",
+        category: "Camilan",
+        price: 10000,
+        description: "Pisang goreng hangat dan renyah.",
+        image: "photo-1601050690597-df0568f70950"
+      }
+    ];
+
+    const cart = {};
+    let activeCategory = "Semua";
+
+    const rupiah = angka =>
+      new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+      }).format(angka);
+
+    function renderMenu() {
+      const keyword = document
+        .getElementById("search")
+        .value.toLowerCase()
+        .trim();
+
+      const filtered = menu.filter(item => {
+        const categoryMatch =
+          activeCategory === "Semua" ||
+          item.category === activeCategory;
+
+        const searchMatch =
+          item.name.toLowerCase().includes(keyword) ||
+          item.description.toLowerCase().includes(keyword);
+
+        return categoryMatch && searchMatch;
+      });
+
+      const grid = document.getElementById("menuGrid");
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p class="empty">Menu tidak ditemukan.</p>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="menu-card">
+          <img
+            src="https://images.unsplash.com/${item.image}?auto=format&fit=crop&w=700&q=80"
+            alt="${item.name}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/f0e4d4/70452e?text=Kopi+Senja'"
+          >
+          <div class="menu-info">
+            <span class="category">${item.category}</span>
+            <h3>${item.name}</h3>
+            <p class="description">${item.description}</p>
+            <div class="menu-bottom">
+              <span class="price">${rupiah(item.price)}</span>
+              <button class="add-btn" onclick="addToCart(${item.id})">
+                + Tambah
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      renderCart();
+    }
+
+    function changeQty(id, amount) {
+      cart[id] = (cart[id] || 0) + amount;
+
+      if (cart[id] <= 0) {
+        delete cart[id];
+      }
+
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cartItems");
+      const ids = Object.keys(cart);
+
+      if (ids.length === 0) {
+        container.innerHTML =
+          '<p class="empty">Belum ada menu yang dipilih.</p>';
+        document.getElementById("totalPrice").textContent = rupiah(0);
+        return;
+      }
+
+      let total = 0;
+
+      container.innerHTML = ids.map(id => {
+        const item = menu.find(m => m.id === Number(id));
+        const qty = cart[id];
+        const subtotal = item.price * qty;
+
+        total += subtotal;
+
+        return `
+          <div class="cart-item">
+            <div>
+              <strong>${item.name}</strong>
+              <small>${rupiah(item.price)} × ${qty}</small>
+            </div>
+            <div class="quantity">
+              <button onclick="changeQty(${id}, -1)" aria-label="Kurangi">
+                −
+              </button>
+              <span>${qty}</span>
+              <button onclick="changeQty(${id}, 1)" aria-label="Tambah">
+                +
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("totalPrice").textContent = rupiah(total);
+    }
+
+    function checkout() {
+      const ids = Object.keys(cart);
+
+      if (ids.length === 0) {
+        alert("Silakan pilih menu terlebih dahulu!");
+        return;
+      }
+
+      if (!/^\d{10,15}$/.test(nomorWhatsApp)) {
+        alert("Silakan atur nomor WhatsApp cafe di dalam kode.");
+        return;
+      }
+
+      let total = 0;
+      let pesan = "Halo Kopi Senja, saya ingin memesan:\\n\\n";
+
+      ids.forEach(id => {
+        const item = menu.find(m => m.id === Number(id));
+        const subtotal = item.price * cart[id];
+        total += subtotal;
+
+        pesan += `${item.name} x${cart[id]} = ${rupiah(subtotal)}\\n`;
+      });
+
+      pesan += `\\nTotal pesanan: ${rupiah(total)}`;
+      pesan += "\\n\\nMohon konfirmasi pesanan saya. Terima kasih!";
+
+      const url =
+        "https://wa.me/" + nomorWhatsApp +
+        "?text=" + encodeURIComponent(pesan);
+
+      window.open(url, "_blank");
+    }
+
+    document.getElementById("search")
+      .addEventListener("input", renderMenu);
+
+    document.querySelectorAll(".filter").forEach(button => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category;
+
+        document.querySelectorAll(".filter").forEach(btn => {
+          btn.classList.toggle("active", btn === button);
+        });
+
+        renderMenu();
+      });
+    });
+
+    renderMenu();
+    renderCart();
+  </script>
+</body>
+</html>
